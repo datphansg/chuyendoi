@@ -1,0 +1,19 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 1200">
+  <defs><linearGradient id="garden" x2="0" y2="1"><stop stop-color="#d5ba8b"/><stop offset=".52" stop-color="#82916c"/><stop offset="1" stop-color="#394d3d"/></linearGradient></defs>
+  <rect width="960" height="1200" fill="url(#garden)"/>
+  <circle cx="716" cy="246" r="135" fill="#f4d5a0" opacity=".82"/>
+  <path d="M0 705q170-145 336 0t322 0 302 0v495H0Z" fill="#405741"/>
+  <g fill="#596e48">
+    <circle cx="140" cy="440" r="150"/><circle cx="380" cy="369" r="180"/><circle cx="653" cy="425" r="168"/><circle cx="861" cy="376" r="157"/>
+  </g>
+  <g fill="#84905d">
+    <circle cx="154" cy="456" r="25"/><circle cx="223" cy="391" r="21"/><circle cx="335" cy="299" r="24"/><circle cx="447" cy="370" r="26"/><circle cx="585" cy="354" r="22"/><circle cx="723" cy="414" r="24"/><circle cx="825" cy="320" r="22"/>
+  </g>
+  <g fill="#cf8953">
+    <circle cx="123" cy="476" r="20"/><circle cx="278" cy="412" r="19"/><circle cx="401" cy="316" r="20"/><circle cx="549" cy="451" r="21"/><circle cx="669" cy="341" r="20"/><circle cx="863" cy="466" r="19"/>
+  </g>
+  <path d="M74 817q174-104 348-42t340-20 198 13v432H74Z" fill="#8d7654"/>
+  <path d="M0 1010q190-111 397-54t365-40 198-15v299H0Z" fill="#314435"/>
+  <path d="M292 812v389m337-426v426" stroke="#766249" stroke-width="20"/>
+  <text x="70" y="112" fill="#fff2d8" font-family="Georgia,serif" font-size="28" letter-spacing="7">MÙA QUẢ ĐẦU TIÊN</text>
+</svg>

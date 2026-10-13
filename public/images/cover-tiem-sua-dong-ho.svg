@@ -1,0 +1,18 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 1200">
+  <defs><linearGradient id="wall" x2="0" y2="1"><stop stop-color="#d4c7a9"/><stop offset="1" stop-color="#9b9a7c"/></linearGradient><radialGradient id="face"><stop stop-color="#f1dcac"/><stop offset="1" stop-color="#bc9565"/></radialGradient></defs>
+  <rect width="960" height="1200" fill="url(#wall)"/>
+  <path d="M0 887h960v313H0z" fill="#746b55"/>
+  <path d="M0 917h960" stroke="#c2aa7e" stroke-width="18"/>
+  <rect x="104" y="135" width="350" height="425" rx="5" fill="#75664f"/>
+  <rect x="123" y="154" width="312" height="387" fill="#d9ca9e"/>
+  <circle cx="280" cy="336" r="130" fill="url(#face)" stroke="#684d36" stroke-width="14"/>
+  <g stroke="#5a4b39" stroke-width="7"><path d="M280 223v18m0 190v18M167 336h18m190 0h18M200 256l14 14m132 132 14 14m0-160-14 14m-132 132-14 14"/></g>
+  <path d="m280 336 55-49m-55 49-5-78" stroke="#614d38" stroke-width="9" stroke-linecap="round"/>
+  <circle cx="280" cy="336" r="10" fill="#614d38"/>
+  <path d="M510 628h340v294H510z" fill="#574a38"/>
+  <path d="M535 655h290v232H535z" fill="#c8ad7b"/>
+  <path d="M558 853c48-67 92-52 129-104s76-42 109-94" fill="none" stroke="#5c5947" stroke-width="8"/>
+  <path d="M594 723h180m-155 40h126" stroke="#ead7ad" stroke-width="8" opacity=".6"/>
+  <path d="M109 760h310v26H109zm35 30h24v218h-24zm215 0h24v218h-24z" fill="#645540"/>
+  <text x="108" y="1080" fill="#f6ebd4" font-family="Georgia,serif" font-size="29" letter-spacing="6">NHỮNG GIỜ KHÔNG KIM</text>
+</svg>

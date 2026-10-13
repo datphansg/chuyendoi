@@ -1,0 +1,50 @@
+---
+import { getCollection } from 'astro:content';
+import BaseLayout from '../layouts/BaseLayout.astro';
+import SiteHeader from '../components/SiteHeader.astro';
+import StoryGrid from '../components/StoryGrid.astro';
+import LoadMore from '../components/LoadMore.astro';
+import { sortStories, STORIES_PER_PAGE } from '../lib/stories';
+
+const stories = sortStories(await getCollection('stories'));
+const pages = Math.max(1, Math.ceil(stories.length / STORIES_PER_PAGE));
+const visibleStories = stories.slice(0, STORIES_PER_PAGE);
+const firstCover = visibleStories[0]?.data.cover ?? '/images/cover-mua-tren-mai-ton.svg';
+---
+
+<BaseLayout
+  title="Nếp — Truyện chữ đọc theo nhịp của bạn"
+  description="Những câu chuyện ngắn bằng tiếng Việt, có minh họa và được kể để bạn đọc chậm lại một chút."
+  image={firstCover}
+  imageAlt={visibleStories[0]?.data.coverAlt}
+>
+  <SiteHeader dark />
+  <main class="home-shell" id="bang-tin" aria-label="Bảng tin truyện">
+    <div class="home-heading">
+      <div>
+        <p class="home-eyebrow">MỘT CHÚT THỜI GIAN CHO RIÊNG BẠN</p>
+        <h1>Những câu chuyện <span>đọng lại.</span></h1>
+      </div>
+      <p class="home-hint">Một tuyển tập truyện ngắn bằng tiếng Việt</p>
+    </div>
+    <StoryGrid stories={visibleStories} />
+    <LoadMore
+      shown={visibleStories.length}
+      total={stories.length}
+      nextHref={pages > 1 ? '/trang/2/' : undefined}
+    />
+    <footer class="home-footer" id="gioi-thieu">
+      <span>Nếp — Truyện chữ</span>
+      <p>Viết bằng sự dịu dàng. Đọc theo nhịp của riêng bạn.</p>
+      <a href="/sitemap.xml">Sitemap</a>
+    </footer>
+  </main>
+  <script>
+    document.addEventListener('click', (event) => {
+      if (!(event.target instanceof Element)) return;
+      const storyLink = event.target.closest<HTMLAnchorElement>('[data-story-slug]');
+      const slug = storyLink?.dataset.storySlug;
+      if (slug) sessionStorage.setItem('nep-last-story', slug);
+    });
+  </script>
+</BaseLayout>

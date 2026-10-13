@@ -1,0 +1,23 @@
+---
+interface Props {
+  active?: 'feed' | 'about';
+  dark?: boolean;
+}
+
+const { active = 'feed', dark = false } = Astro.props;
+---
+
+<header class:list={['site-header', { 'is-dark': dark }]}>
+  <a class="wordmark" href="/" aria-label="Nếp — về bảng tin">
+    <span class="wordmark-mark" aria-hidden="true">n.</span>
+    <span>Nếp<span class="wordmark-subtitle"> / truyện chữ</span></span>
+  </a>
+  <nav class="header-nav" aria-label="Điều hướng chính">
+    <a class:list={['header-link', { 'is-active': active === 'feed' }]} href="/">Bảng tin</a>
+    <a class="header-link header-about" href="#gioi-thieu">Một góc đọc chậm</a>
+    <button class="theme-toggle" type="button" data-theme-toggle aria-label="Chuyển sang giao diện sáng" aria-pressed="true">
+      <span class="theme-toggle-icon" data-theme-icon aria-hidden="true">☼</span>
+      <span class="theme-toggle-label" data-theme-label>Giao diện sáng</span>
+    </button>
+  </nav>
+</header>

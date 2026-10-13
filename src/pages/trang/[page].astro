@@ -1,0 +1,58 @@
+---
+import { getCollection } from 'astro:content';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import SiteHeader from '../../components/SiteHeader.astro';
+import StoryGrid from '../../components/StoryGrid.astro';
+import LoadMore from '../../components/LoadMore.astro';
+import { sortStories, STORIES_PER_PAGE } from '../../lib/stories';
+
+const stories = sortStories(await getCollection('stories'));
+const pageCount = Math.max(1, Math.ceil(stories.length / STORIES_PER_PAGE));
+
+export async function getStaticPaths() {
+  const allStories = sortStories(await getCollection('stories'));
+  const pageCount = Math.max(1, Math.ceil(allStories.length / STORIES_PER_PAGE));
+  return Array.from({ length: pageCount - 1 }, (_, index) => ({ params: { page: String(index + 2) } }));
+}
+
+const page = Number(Astro.params.page);
+const visibleStories = stories.slice((page - 1) * STORIES_PER_PAGE, page * STORIES_PER_PAGE);
+const firstCover = visibleStories[0]?.data.cover ?? '/images/cover-mua-tren-mai-ton.svg';
+---
+
+<BaseLayout
+  title={`Bảng tin truyện — Trang ${page} | Nếp`}
+  description={`Khám phá những câu chuyện chữ mới trên Nếp, trang ${page}.`}
+  image={firstCover}
+  canonicalPath={`/trang/${page}/`}
+>
+  <SiteHeader dark />
+  <main class="home-shell" id="bang-tin" aria-label="Bảng tin truyện">
+    <div class="home-heading">
+      <div>
+        <p class="home-eyebrow">MỘT CHÚT THỜI GIAN CHO RIÊNG BẠN</p>
+        <h1>Những câu chuyện <span>đọng lại.</span></h1>
+      </div>
+      <p class="home-hint">Trang {page} / {pageCount}</p>
+    </div>
+    <StoryGrid stories={visibleStories} />
+    <LoadMore
+      shown={visibleStories.length}
+      total={stories.length}
+      nextHref={page < pageCount ? `/trang/${page + 1}/` : undefined}
+    />
+    <footer class="home-footer" id="gioi-thieu">
+      <span>Nếp — Truyện chữ</span>
+      <p>Viết bằng sự dịu dàng. Đọc theo nhịp của riêng bạn.</p>
+      <a href="/sitemap.xml">Sitemap</a>
+    </footer>
+  </main>
+  <script>
+    document.querySelectorAll<HTMLAnchorElement>('[data-story-slug]').forEach((storyLink) => {
+      storyLink.addEventListener('click', () => {
+        const slug = storyLink.dataset.storySlug;
+        if (slug) sessionStorage.setItem('nep-last-story', slug);
+      });
+    });
+  </script>
+</BaseLayout>

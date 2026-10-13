@@ -1,0 +1,18 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 1200">
+  <defs>
+    <linearGradient id="sky" x2="0" y2="1"><stop stop-color="#9eafbd"/><stop offset=".58" stop-color="#e4c6a2"/><stop offset="1" stop-color="#655e62"/></linearGradient>
+    <linearGradient id="window" x2="1" y2="1"><stop stop-color="#f4d19e"/><stop offset="1" stop-color="#bd8765"/></linearGradient>
+  </defs>
+  <rect width="960" height="1200" fill="url(#sky)"/>
+  <circle cx="700" cy="312" r="112" fill="#f5dfb3" opacity=".84"/>
+  <path d="M0 617 197 532l152 56 203-174 212 181 196-70v675H0Z" fill="#42474a"/>
+  <path d="m0 752 480-198 480 163v483H0Z" fill="#33383b"/>
+  <path d="m103 720 360-155 350 119" fill="none" stroke="#9b9182" stroke-width="10" opacity=".55"/>
+  <path d="M342 677h264v342H342z" fill="#4e4b48"/>
+  <path d="M365 702h218v290H365z" fill="url(#window)"/>
+  <path d="M475 702v290M365 842h218" stroke="#4e4b48" stroke-width="15"/>
+  <path d="M125 443 99 560m87-153-20 146m646-236-22 128m106-40-19 130M280 330l-19 105m403-300-12 88" stroke="#dfe5e1" stroke-width="6" stroke-linecap="round" opacity=".55"/>
+  <path d="M0 1046h960v154H0Z" fill="#292e31"/>
+  <path d="M180 1040h600" stroke="#77756f" stroke-width="4"/>
+  <text x="70" y="110" fill="#faf4e9" font-family="Georgia,serif" font-size="28" letter-spacing="8">MỘT CHIỀU THÁNG BẢY</text>
+</svg>

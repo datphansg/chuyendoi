@@ -1,0 +1,104 @@
+---
+import { getCollection, render } from 'astro:content';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import SiteHeader from '../../components/SiteHeader.astro';
+import StoryGrid from '../../components/StoryGrid.astro';
+import { sortStories } from '../../lib/stories';
+
+const stories = sortStories(await getCollection('stories'));
+
+export async function getStaticPaths() {
+  const allStories = sortStories(await getCollection('stories'));
+  return allStories.map((story) => ({ params: { slug: story.data.slug }, props: { story } }));
+}
+
+const { story } = Astro.props;
+const { Content, headings } = await render(story);
+const storyIndex = stories.findIndex((item) => item.data.slug === story.data.slug);
+const previous = stories[storyIndex - 1];
+const next = stories[storyIndex + 1];
+const recommendedStories = stories
+  .filter((item) => item.data.slug !== story.data.slug)
+  .toSorted((a, b) => {
+    const aMatches = a.data.genres.filter((genre) => story.data.genres.includes(genre)).length;
+    const bMatches = b.data.genres.filter((genre) => story.data.genres.includes(genre)).length;
+    return bMatches - aMatches;
+  })
+  .slice(0, 4);
+const canonicalPath = `/truyen/${story.data.slug}/`;
+---
+
+<BaseLayout
+  title={`${story.data.title} | Nếp — Truyện chữ`}
+  description={story.data.description}
+  image={story.data.cover}
+  imageAlt={story.data.coverAlt}
+  canonicalPath={canonicalPath}
+  type="article"
+>
+  <SiteHeader />
+  <main class="reader-shell">
+    <a class="back-link" href="/">← <span>Trở về bảng tin</span></a>
+    <article class="reader">
+      <header class="reader-header">
+        <div class="genre-list">
+          {story.data.genres.map((genre) => <span class="genre-chip">{genre}</span>)}
+        </div>       
+        <div class="reader-byline">
+           <span aria-hidden="true">·</span>
+          <time datetime={story.data.publishedAt.toISOString()}>
+            {story.data.publishedAt.toLocaleDateString('vi-VN', { day: 'numeric', month: 'long', year: 'numeric' })}
+          </time>
+        </div>
+      </header>
+      <figure class="reader-cover">
+        <img
+          src={story.data.cover}
+          alt={story.data.coverAlt}
+          width="1200"
+          height="720"
+          fetchpriority="high"
+        />
+        <span class="image-fallback" hidden aria-hidden="true">Hãy để câu chuyện hiện lên trong trí tưởng tượng của bạn.</span>
+      </figure>
+      {headings.filter((heading) => heading.depth === 2).length > 1 && (
+        <nav class="chapter-nav" aria-label="Mục lục các chương">
+          <span class="chapter-nav-label">TRONG CÂU CHUYỆN NÀY</span>
+          {headings.filter((heading) => heading.depth === 2).map((heading, index, chapters) => (
+            <a href={`#${heading.slug}`}>
+              <span>{String(index + 1).padStart(2, '0')}</span>
+              {heading.text}
+              {index < chapters.length - 1 && <span class="chapter-divider" aria-hidden="true">·</span>}
+            </a>
+          ))}
+        </nav>
+      )}
+      <div class="story-prose">
+        <Content />
+      </div>
+      <nav class="chapter-pager" aria-label="Chuyển chương">
+        {headings.filter((heading) => heading.depth === 2).map((_, index, chapters) => (
+          <div class="chapter-pager-row">
+            <span>{String(index + 1).padStart(2, '0')} / {String(chapters.length).padStart(2, '0')}</span>
+            {index > 0 && <a href={`#${chapters[index - 1].slug}`}>↑ Chương trước</a>}
+            {index < chapters.length - 1 && <a href={`#${chapters[index + 1].slug}`}>Chương tiếp theo ↓</a>}
+          </div>
+        ))}
+      </nav>
+      {recommendedStories.length > 0 && (
+        <section class="related-stories" aria-labelledby="related-stories-heading">
+          <div class="related-stories-heading">
+            <p class="home-eyebrow">DÀNH CHO BẠN</p>
+            <h2 id="related-stories-heading">Đọc thêm truyện</h2>
+          </div>
+          <StoryGrid stories={recommendedStories} />
+        </section>
+      )}
+      <nav class="story-pager" aria-label="Truyện khác">
+        {previous && <a href={`/truyen/${previous.data.slug}/`}><span>← Truyện trước</span>{previous.data.title}</a>}
+        <a href="/">Về bảng tin ↑</a>
+        {next && <a href={`/truyen/${next.data.slug}/`}><span>Truyện tiếp theo →</span>{next.data.title}</a>}
+      </nav>
+    </article>
+  </main>
+</BaseLayout>

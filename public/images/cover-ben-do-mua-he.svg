@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 1200">
+  <defs><linearGradient id="sea" x2="0" y2="1"><stop stop-color="#e9ba8b"/><stop offset=".44" stop-color="#728d8b"/><stop offset="1" stop-color="#365c62"/></linearGradient></defs>
+  <rect width="960" height="1200" fill="url(#sea)"/>
+  <circle cx="705" cy="292" r="119" fill="#ffe0aa"/>
+  <path d="M0 622q142-43 280 0t280 0 280 0 280 0v578H0Z" fill="#47747a"/>
+  <path d="M0 732q156-28 311 0t311 0 338 0v468H0Z" fill="#385b60"/>
+  <path d="M0 846q190-24 380 0t380 0 200 0" fill="none" stroke="#e8cba1" stroke-width="8" opacity=".65"/>
+  <path d="M0 966q178-23 354 0t354 0 252 0" fill="none" stroke="#bbccad" stroke-width="6" opacity=".65"/>
+  <path d="M305 612h352v54H305z" fill="#745948"/>
+  <path d="M359 666v263m247-263v263" stroke="#574539" stroke-width="20"/>
+  <path d="M415 612v-94h157v94" fill="#c68155" stroke="#744b39" stroke-width="13"/>
+  <path d="M469 520v-93h49v93" fill="#526365"/>
+  <path d="M464 435q27-34 59 0" fill="none" stroke="#d9d5b7" stroke-width="8"/>
+  <path d="M266 932h438" stroke="#c6a47d" stroke-width="15"/>
+  <path d="M96 360q20 41 38 83m-54-27 31-11m22 56 31-11m506-281 24 49m-41-17 35-12" stroke="#f5ddbd" stroke-width="6" stroke-linecap="round" opacity=".68"/>
+  <text x="80" y="1090" fill="#f6ead2" font-family="Georgia,serif" font-size="29" letter-spacing="6">CHUYẾN ĐÒ CUỐI HÈ</text>
+</svg>

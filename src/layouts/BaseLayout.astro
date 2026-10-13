@@ -1,0 +1,141 @@
+---
+import '../styles/global.css';
+
+interface Props {
+  title: string;
+  description: string;
+  image?: string;
+  imageAlt?: string;
+  canonicalPath?: string;
+  type?: 'website' | 'article';
+}
+
+const {
+  title,
+  description,
+  image = '/images/cover-mua-tren-mai-ton.svg',
+  imageAlt = 'Minh họa truyện Mưa trên mái tôn',
+  canonicalPath = Astro.url.pathname,
+  type = 'website',
+} = Astro.props;
+const canonical = new URL(canonicalPath, Astro.site);
+const imageUrl = new URL(image, Astro.site);
+---
+
+<!doctype html>
+<html lang="vi">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="theme-color" content="#f7f5f0" />
+    <script is:inline>
+      (() => {
+        let theme = 'dark';
+        try {
+          const savedTheme = localStorage.getItem('nep-theme');
+          if (savedTheme === 'light' || savedTheme === 'dark') theme = savedTheme;
+        } catch (error) {
+          console.warn('Không thể đọc chế độ giao diện đã lưu:', error);
+        }
+        document.documentElement.dataset.theme = theme;
+        const themeColor = document.querySelector('meta[name="theme-color"]');
+        if (themeColor) themeColor.setAttribute('content', theme === 'dark' ? '#10100f' : '#f7f5f0');
+      })();
+    </script>
+    <meta name="description" content={description} />
+    <link rel="canonical" href={canonical.href} />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <meta property="og:type" content={type} />
+    <meta property="og:locale" content="vi_VN" />
+    <meta property="og:site_name" content="Nếp — Truyện chữ" />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:url" content={canonical.href} />
+    <meta property="og:image" content={imageUrl.href} />
+    <meta property="og:image:alt" content={imageAlt} />
+    <meta name="twitter:card" content="summary_large_image" />
+    <title>{title}</title>
+    <slot name="head" />
+  </head>
+  <body>
+    <slot />
+    <dialog class="story-promo-dialog" aria-label="Ưu đãi Shopee" data-story-promo>
+      <button class="story-promo-close" type="button" aria-label="Đóng quảng cáo" data-story-promo-close>×</button>
+      <a
+        class="story-promo-link"
+        href="https://s.shopee.vn/3qNq8cC7AC"
+        target="_blank"
+        rel="sponsored noopener noreferrer"
+        aria-label="Xem ưu đãi trên Shopee, mở trong tab mới"
+      >
+        <img src="/images/vn-11134258-81ztc-mu759jq5t7gkfb.webp" alt="Ưu đãi sản phẩm trên Shopee" />
+      </a>
+    </dialog>
+    <script>
+      const storyPromo = document.querySelector<HTMLDialogElement>('[data-story-promo]');
+      const storyPromoClose = storyPromo?.querySelector<HTMLButtonElement>('[data-story-promo-close]');
+
+      if (storyPromo && document.querySelector('.reader')) {
+        storyPromo.showModal();
+        storyPromoClose?.focus();
+      }
+
+      storyPromoClose?.addEventListener('click', () => storyPromo?.close());
+      storyPromo?.addEventListener('click', (event) => {
+        if (event.target === storyPromo) storyPromo.close();
+      });
+    </script>
+    <script is:inline>
+      (() => {
+        const buttons = [...document.querySelectorAll('[data-theme-toggle]')];
+
+        function updateThemeButton(theme) {
+          const isDark = theme === 'dark';
+          buttons.forEach((button) => {
+            button.setAttribute('aria-label', `Chuyển sang giao diện ${isDark ? 'sáng' : 'tối'}`);
+            button.setAttribute('aria-pressed', String(isDark));
+            const icon = button.querySelector('[data-theme-icon]');
+            const label = button.querySelector('[data-theme-label]');
+            if (icon) icon.textContent = isDark ? '☼' : '☾';
+            if (label) label.textContent = `Giao diện ${isDark ? 'sáng' : 'tối'}`;
+          });
+        }
+
+        updateThemeButton(document.documentElement.dataset.theme || 'dark');
+
+        document.addEventListener('click', (event) => {
+          if (!(event.target instanceof Element) || !event.target.closest('[data-theme-toggle]')) return;
+
+          const theme = document.documentElement.dataset.theme === 'dark' ? 'light' : 'dark';
+          document.documentElement.dataset.theme = theme;
+          const themeColor = document.querySelector('meta[name="theme-color"]');
+          if (themeColor) themeColor.setAttribute('content', theme === 'dark' ? '#10100f' : '#f7f5f0');
+          updateThemeButton(theme);
+          try {
+            localStorage.setItem('nep-theme', theme);
+          } catch (error) {
+            console.warn('Không thể lưu chế độ giao diện:', error);
+          }
+        });
+      })();
+    </script>
+    <script>
+      document.addEventListener('error', (event) => {
+        const image = event.target;
+        if (!(image instanceof HTMLImageElement) || !image.matches('.story-art, .story-tile-image, .reader-cover img')) return;
+
+        image.hidden = true;
+        const fallback = image.parentElement?.querySelector<HTMLElement>('.image-fallback');
+        if (fallback) fallback.hidden = false;
+      }, true);
+
+      [...document.querySelectorAll<HTMLImageElement>('.story-art, .story-tile-image, .reader-cover img')]
+        .filter((image) => image.complete && image.naturalWidth === 0)
+        .forEach((image) => {
+          image.hidden = true;
+          const fallback = image.parentElement?.querySelector<HTMLElement>('.image-fallback');
+          if (fallback) fallback.hidden = false;
+        });
+    </script>
+  </body>
+</html>

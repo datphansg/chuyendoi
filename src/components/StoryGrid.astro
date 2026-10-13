@@ -1,0 +1,41 @@
+---
+import type { Story } from '../lib/stories';
+
+interface Props {
+  stories: Story[];
+}
+
+const { stories } = Astro.props;
+---
+
+<section class="story-grid" aria-label="Các truyện">
+  {stories.map((story, index) => (
+    <article class="story-tile-wrap" id={story.data.slug}>
+      <a
+        class="story-tile"
+        href={`/truyen/${story.data.slug}/`}
+        data-story-slug={story.data.slug}
+        aria-labelledby={`title-${story.data.slug}`}
+      >
+        <img
+          class="story-tile-image"
+          src={story.data.cover}
+          alt={story.data.coverAlt}
+          width="960"
+          height="1200"
+          loading={index === 0 ? 'eager' : 'lazy'}
+          fetchpriority={index === 0 ? 'high' : 'auto'}
+        />
+        <span class="image-fallback story-tile-fallback" hidden aria-hidden="true">Một câu chuyện đang đợi bạn.</span>
+        {story.data.pinned && <span class="story-pinned">Đã ghim</span>}
+        <span class="story-tile-top" aria-hidden="true">▢</span>
+        <span class="story-tile-shade" aria-hidden="true"></span>
+       
+        <span class="story-tile-caption">
+          <span class="story-tile-genre">{story.data.genres[0]}</span>
+          <span class="story-tile-read"><span aria-hidden="true">▷</span> Đọc truyện</span>
+        </span>
+      </a>
+    </article>
+  ))}
+</section>

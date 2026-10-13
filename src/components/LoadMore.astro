@@ -1,0 +1,113 @@
+---
+interface Props {
+  shown: number;
+  total: number;
+  nextHref?: string;
+}
+
+const { shown, total, nextHref } = Astro.props;
+---
+
+<nav class="load-more" aria-label="Tải thêm truyện">
+  <p
+    class="load-more-count"
+    data-load-more-count
+    data-shown={shown}
+    data-total={total}
+    aria-live="polite"
+  >
+    Đang xem {shown} / {total} câu chuyện
+  </p>
+  {nextHref ? (
+    <>
+      <a class="load-more-link" href={nextHref} data-load-more>
+        <span data-load-more-label>Tải thêm truyện</span>
+        <span class="load-more-arrow" aria-hidden="true">↓</span>
+      </a>
+      <span class="load-more-sentinel" data-load-more-sentinel aria-hidden="true"></span>
+    </>
+  ) : (
+    <p class="load-more-end">Bạn đã xem hết truyện.</p>
+  )}
+</nav>
+
+<script>
+  const loadMoreLink = document.querySelector<HTMLAnchorElement>('[data-load-more]');
+  const storyGrid = document.querySelector<HTMLElement>('.story-grid');
+  const loadMoreCount = document.querySelector<HTMLElement>('[data-load-more-count]');
+  const loadMoreLabel = loadMoreLink?.querySelector<HTMLElement>('[data-load-more-label]');
+  const loadMoreSentinel = document.querySelector<HTMLElement>('[data-load-more-sentinel]');
+  let isLoadingMore = false;
+
+  async function loadNextPage() {
+    if (isLoadingMore || !storyGrid || !loadMoreCount || !loadMoreLabel || !loadMoreLink) return;
+
+    isLoadingMore = true;
+    loadMoreLink.setAttribute('aria-disabled', 'true');
+    loadMoreLink.classList.add('is-loading');
+    loadMoreLabel.textContent = 'Đang tải truyện…';
+
+    try {
+      const nextPageUrl = new URL(loadMoreLink.href, location.href);
+      const response = await fetch(nextPageUrl, {
+        headers: { Accept: 'text/html' },
+      });
+      if (!response.ok) throw new Error(`Không tải được truyện (HTTP ${response.status}).`);
+
+      const nextDocument = new DOMParser().parseFromString(await response.text(), 'text/html');
+      const nextGrid = nextDocument.querySelector<HTMLElement>('.story-grid');
+      if (!nextGrid) throw new Error('Trang tiếp theo không có danh sách truyện.');
+
+      const newCards = [...nextGrid.querySelectorAll<HTMLElement>(':scope > .story-tile-wrap')]
+        .filter((card) => card.id && !document.getElementById(card.id));
+      if (newCards.length === 0) throw new Error('Không tìm thấy truyện mới để tải.');
+
+      storyGrid.append(...newCards);
+      loadMoreLabel.textContent = 'Tải thêm truyện';
+
+      const shown = Number(loadMoreCount.dataset.shown) + newCards.length;
+      const total = Number(loadMoreCount.dataset.total);
+      loadMoreCount.dataset.shown = String(shown);
+      loadMoreCount.textContent = `Đang xem ${shown} / ${total} câu chuyện`;
+
+      const nextLink = nextDocument.querySelector<HTMLAnchorElement>('[data-load-more]');
+      if (nextLink) {
+        const nextHref = nextLink.getAttribute('href');
+        if (!nextHref) throw new Error('Trang tiếp theo không có đường dẫn tải thêm.');
+        loadMoreLink.href = new URL(nextHref, nextPageUrl).href;
+        if (loadMoreSentinel) {
+          loadMoreObserver?.unobserve(loadMoreSentinel);
+          loadMoreObserver?.observe(loadMoreSentinel);
+        }
+      } else {
+        loadMoreLink.remove();
+        loadMoreSentinel?.remove();
+        loadMoreCount.textContent = `Đã xem hết ${total} câu chuyện`;
+      }
+    } catch (error) {
+      console.error('Không thể tải thêm truyện:', error);
+      loadMoreCount.textContent = 'Chưa tải được truyện. Vui lòng thử lại.';
+      loadMoreLabel.textContent = 'Thử tải lại';
+      if (loadMoreSentinel) loadMoreObserver?.unobserve(loadMoreSentinel);
+    } finally {
+      isLoadingMore = false;
+      if (loadMoreLink.isConnected) {
+        loadMoreLink.removeAttribute('aria-disabled');
+        loadMoreLink.classList.remove('is-loading');
+      }
+    }
+  }
+
+  loadMoreLink?.addEventListener('click', (event) => {
+    event.preventDefault();
+    void loadNextPage();
+  });
+
+  const loadMoreObserver = loadMoreSentinel
+    ? new IntersectionObserver((entries) => {
+      if (entries.some((entry) => entry.isIntersecting)) void loadNextPage();
+    }, { rootMargin: '700px 0px' })
+    : undefined;
+
+  if (loadMoreSentinel) loadMoreObserver?.observe(loadMoreSentinel);
+</script>

@@ -1,0 +1,18 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 1200">
+  <defs><linearGradient id="room" x2="0" y2="1"><stop stop-color="#c9b9aa"/><stop offset="1" stop-color="#61595a"/></linearGradient><linearGradient id="lit" x2="0" y2="1"><stop stop-color="#f8d9a8"/><stop offset="1" stop-color="#c2916b"/></linearGradient></defs>
+  <rect width="960" height="1200" fill="url(#room)"/>
+  <rect x="516" y="102" width="344" height="554" fill="#665e58"/>
+  <rect x="539" y="124" width="298" height="506" fill="url(#lit)"/>
+  <path d="M688 124v506M539 380h298" stroke="#77665a" stroke-width="18"/>
+  <path d="M0 763h960v437H0Z" fill="#493f3e"/>
+  <path d="M77 788h731v31H77z" fill="#7e6955"/>
+  <path d="M114 818h31v212h-31zm621 0h31v212h-31z" fill="#6f5948"/>
+  <path d="M292 739q42-38 82 0v176h-82z" fill="#bd9d79"/>
+  <path d="M302 745v-88h64v88" fill="#dbb489"/>
+  <path d="M330 657c-27-59 25-102 0-157 57 46 14 102 29 157" fill="#596b50"/>
+  <path d="M257 917h209v136H257z" fill="#ddd0b7"/>
+  <path d="M290 956h141m-141 24h122m-122 24h94" stroke="#968a75" stroke-width="6"/>
+  <path d="M0 1080h960" stroke="#948478" stroke-width="7"/>
+  <circle cx="407" cy="824" r="21" fill="#dca876"/>
+  <text x="73" y="1120" fill="#f3e8d6" font-family="Georgia,serif" font-size="27" letter-spacing="5">NHỮNG ĐIỀU CHƯA KỊP NÓI</text>
+</svg>
