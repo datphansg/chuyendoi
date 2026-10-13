@@ -63,8 +63,8 @@ Các lần push tiếp theo sẽ kích hoạt build mới sau khi kết nối re
 ## Triển khai miễn phí lên Cloudflare Pages
 
 1. Trong Cloudflare, chọn **Workers & Pages → Create application → Pages → Connect to Git** và chọn repository.
-2. Đặt **Framework preset** là `Astro`, **Build command** là `npm run build`, **Build output directory** là `dist`. Node.js 22.12 trở lên được khuyến nghị.
-3. Trong **Settings → Environment variables**, thêm `SITE_URL` với địa chỉ HTTPS chính thức của website, ví dụ `https://ten-trang.pages.dev`. Dùng cùng giá trị này cho Production và Preview; sitemap, robots.txt và canonical được sinh từ địa chỉ đó.
+2. Đặt **Project name** là `chuyendoi` để dùng địa chỉ `https://chuyendoi.pages.dev` (nếu tên còn khả dụng), **Framework preset** là `Astro`, **Build command** là `npm run build`, **Build output directory** là `dist`. Node.js 22.12 trở lên được khuyến nghị.
+3. Trong **Settings → Environment variables**, thêm `SITE_URL` là `https://chuyendoi.pages.dev`. Dùng cùng giá trị này cho Production và Preview; sitemap, robots.txt và canonical được sinh từ địa chỉ đó.
 4. Lưu cấu hình và triển khai. Những lần push GitHub tiếp theo tự động cập nhật website.
 
 Ứng dụng dùng Astro xuất HTML tĩnh nên không cần adapter Cloudflare, Worker, database hay cấu hình billing. Có thể dùng tên miền miễn phí `*.pages.dev` hoặc gắn tên miền riêng.
